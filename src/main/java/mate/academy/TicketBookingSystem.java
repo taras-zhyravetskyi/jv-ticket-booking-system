@@ -1,16 +1,15 @@
 package mate.academy;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TicketBookingSystem {
-    private Semaphore semaphore;
-    private AtomicInteger counter;
+    private final Semaphore semaphore;
+    private final AtomicInteger counter;
 
     public TicketBookingSystem(int totalSeats) {
-       semaphore = new Semaphore(totalSeats);
-       counter = new AtomicInteger(totalSeats);
+        semaphore = new Semaphore(totalSeats);
+        counter = new AtomicInteger(totalSeats);
     }
 
     public BookingResult attemptBooking(String user) {
@@ -20,7 +19,7 @@ public class TicketBookingSystem {
             bookingResult = new BookingResult(user, true, "Booking successful.");
             semaphore.release(counter.decrementAndGet());
         } catch (RuntimeException e) {
-            return new BookingResult (user, false, "No seats available.");
+            return new BookingResult(user, false, "No seats available.");
         }
         return bookingResult;
     }
